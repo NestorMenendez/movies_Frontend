@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+import breakpoints from '../../global/deviceVariables';
+import { colors } from '../../global/theme';
+
 type Props = {}
 
 export const Footer = (props: Props) => {
@@ -20,8 +23,12 @@ export const Footer = (props: Props) => {
 
 
 const FooterStyles = styled.div`
-grid-area: 10/1/11/7;
-background-color: red;
+grid-area: 12/1/13/7;
+display: flex;
+justify-content: center;
+align-items: center;
+
+background: linear-gradient(to bottom, #ffffff ,${colors.primary});
 
 
 

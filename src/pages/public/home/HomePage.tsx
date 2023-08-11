@@ -1,27 +1,31 @@
 // import { GridDisplayStyles } from "../../../global/gridDisplay.styles"
-import { Header } from "../../../components/Header/Header"
+import { Header } from "../../../components/header/Header"
 import { HomeMainSection } from "./HomeMainSection"
-import { Footer } from "../../../components/Footer/Footer"
-
+import { Footer } from "../../../components/footer/Footer"
 import breakpoints from "../../../global/deviceVariables"
 
-const HomePage = () => {
+import { useAuth0 } from "@auth0/auth0-react"
 
 
+
+export const HomePage = () => {
+
+  const { logout, user, isLoading } = useAuth0();
+
+  if (isLoading) { }
 
 
   return (
 
     <GridDisplayStyles>
-        <Header/>
-        <HomeMainSection/>
-        <Footer/>
+      <Header />
+      <HomeMainSection />
+      <Footer />
     </GridDisplayStyles>
 
   )
 }
 
-export default HomePage
 
 import styled from 'styled-components';
 
@@ -29,7 +33,7 @@ import styled from 'styled-components';
 const GridDisplayStyles = styled.div`
 display: grid;
 grid-template-columns: repeat(6, 1fr);
-grid-template-rows: repeat(10, 1fr);
+grid-template-rows: repeat(12, 1fr);
 height: 100vh;
 width: 100vw;
 
