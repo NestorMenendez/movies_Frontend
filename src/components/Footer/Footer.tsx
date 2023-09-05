@@ -12,11 +12,11 @@ export const Footer = (props: Props) => {
   return (
 
     <FooterStyles>
-
+      <div className='noOpa'>
         PRUEBA DE FOOTER
+      </div>
 
     </FooterStyles>
-
 
   )
 }
@@ -29,8 +29,12 @@ justify-content: center;
 align-items: center;
 
 background: linear-gradient(to bottom, #ffffff ,${colors.primary});
+opacity: 0.75;
 
-
+.noOpa {
+  font-weight: bold;
+  opacity: 1;
+}
 
 
 @media (max-width: ${breakpoints.mobile}px) {

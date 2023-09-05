@@ -3,6 +3,7 @@ import { Header } from "../../../components/header/Header"
 import { HomeMainSection } from "./HomeMainSection"
 import { Footer } from "../../../components/footer/Footer"
 import breakpoints from "../../../global/deviceVariables"
+import backgroundImg from '../../../assets/img/Background_movies.jpg';
 
 import { useAuth0 } from "@auth0/auth0-react"
 
@@ -37,7 +38,8 @@ grid-template-rows: repeat(12, 1fr);
 height: 100vh;
 width: 100vw;
 
-
+background-image: url(${backgroundImg});
+object-fit: cover;
 
 @media (max-width: ${breakpoints.mobile}px) {
 
@@ -47,7 +49,7 @@ width: 100vw;
 
 
 @media (min-width: ${breakpoints.mobile}px) and (max-width: ${breakpoints.tablet}px) {
-background-color: green;
+
 
 
 }

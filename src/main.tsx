@@ -4,21 +4,33 @@ import App from './App.tsx'
 import './index.css'
 import { Auth0Provider } from '@auth0/auth0-react'
 
-const { VITE_AUTH_DOMAIN: domain, VITE_AUTH_CLIENT_ID: clientId, VITE_AUTH_CLIENT_SECRET: clientSecret } = import.meta.env;
+const { VITE_AUTH_DOMAIN: domain, VITE_AUTH_CLIENT_ID: clientId, VITE_AUTH_CLIENT_SECRET: clientSecret, VITE_AUTH_AUDIENCE: audience } = import.meta.env;
 export const redirectUri: string = window.location.origin + "/home";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      authorizationParams={{
-        redirect_uri: redirectUri
-      }}
-    >
+const rootElement = document.getElementById('root');
 
-      <App />
+if (rootElement) {
+  const root = ReactDOM.createRoot(rootElement);
 
-    </Auth0Provider>
-  </React.StrictMode>,
-)
+  root.render(
+    <React.StrictMode>
+
+      <Auth0Provider
+        domain={domain}
+        clientId={clientId}
+        authorizationParams={{
+          redirect_uri: redirectUri,
+          audience: audience
+        }}
+      >
+
+        <App />
+
+
+      </Auth0Provider>
+
+    </React.StrictMode>
+  );
+} else {
+  console.error('Element "root" doesnt exists or not found!!!');
+}

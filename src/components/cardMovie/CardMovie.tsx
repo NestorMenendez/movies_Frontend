@@ -1,27 +1,44 @@
 import styled from 'styled-components';
 import breakpoints from '../../global/deviceVariables';
 import { colors } from '../../global/theme';
+import { useAuth0 } from '@auth0/auth0-react';
 
 type Props = {
+    id: string,
     title: string,
     score: number,
-    genres: [],
+    genres: {
+        name: string,
+        id: string
+    },
     image: {
         public_id: string,
         secure_url: string
-    }
-} //TOFIX hay que traerse las props de la carta... que vienen definidas en el proyecto -> ver el GIT.
+    },
+    openModalEdit?: (movie: any) => void | null
+}
+
 
 export const CardMovie = (Props: Props) => {
-    const { title, score, genres, image } = Props;
+    const { id, title, score, genres, image, openModalEdit } = Props;
+    const imageUrl = image ? image.secure_url : '';
+    const genresNames = genres.name;
+    const { isAuthenticated } = useAuth0();
+
+    const handleCardMovieClick = () => {
+        if (typeof openModalEdit === 'function') {
+            openModalEdit({ id, title, score, genres, image });
+        }
+    };
+
     return (
 
-        <CardMovieStyles>
-            <section className='card-container'>
-                <img src={image.secure_url}></img>
+        <CardMovieStyles isAuthenticated={isAuthenticated}>
+            <section className='card-container' onClick={handleCardMovieClick}>
+                <img src={imageUrl}></img>
                 <div className='card-container__body'>
                     <h5>{title}</h5>
-                    <h6>{genres}</h6>
+                    <h6>{genresNames}</h6>
                     <div>{score}</div>
                 </div>
             </section>
@@ -29,7 +46,11 @@ export const CardMovie = (Props: Props) => {
     )
 }
 
-const CardMovieStyles = styled.div`
+type CardMovieStylesProps = {
+    isAuthenticated: boolean;
+};
+
+const CardMovieStyles = styled.div<CardMovieStylesProps>`
 * {
     padding:0;
     margin:0;
@@ -37,13 +58,24 @@ const CardMovieStyles = styled.div`
 .card-container{
     display: flex;
     flex-direction: column;
-    background-color: ${colors.primary};
+    background-color: ${colors.secondary};
+    opacity: 0.9;
+    border-radius: 0.5rem;
 
     &__body{
         flex-direction: column;
     }
 
 }
+img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    padding: 0.5rem;
+}
+${({ isAuthenticated }) => isAuthenticated && `
+    cursor: pointer;
+  `}
 
 
 @media (max-width: ${breakpoints.mobile}px) {
