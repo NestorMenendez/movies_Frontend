@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import { useAuth0 } from '@auth0/auth0-react'
 import breakpoints from '../../global/deviceVariables'
 import { colors } from '../../global/theme'
-import { deleteMovie, updateMovie } from '../../api/movies.fetch';
+import { deleteMovie, getAllMovies, updateMovie } from '../../api/movies.fetch';
 import { useContext, useEffect, useState } from 'react';
 import { GenresContext } from '../../context/genres.context';
 import { MoviesUserContext } from '../../context/moviesUser.context';
@@ -36,11 +36,12 @@ type MovieProps = {
     }
 }
 
+
 export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseModal, selectedMovie }) => {
 
-    const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext);
+    const { arrayMoviesUser, handleArrayMoviesUser, handleDeleteMovieUser } = useContext(MoviesUserContext);
     const { arrayMovies, handleArrayMovies } = useContext(MoviesPublicContext);
-
+    console.log(selectedMovie)
     const [formData, setFormData] = useState<MovieData>({
         id: '',
         title: '',
@@ -48,7 +49,7 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
         score: 0,
         imageList: null,
     });
-    console.log(selectedMovie)
+
     useEffect(() => {
         if (selectedMovie) {
             const firstGenre = selectedMovie.genres.id;
@@ -62,13 +63,11 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
         }
     }, [selectedMovie]);
 
-
     let id = '';
     let title = '';
     let score = 0;
     let genres: string = '';
     let image = { public_id: '', secure_url: '' };
-
     if (selectedMovie) {
         id = selectedMovie.id;
         title = selectedMovie.title;
@@ -89,7 +88,6 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
             const selectedOptions = Array.from((e.target as HTMLSelectElement).selectedOptions);
             const selectedGenreIds = selectedOptions.map(option => option.value);
             setFormData({ ...formData, genres: selectedGenreIds });
-            console.log(selectedGenreIds)
         } else {
             setFormData({ ...formData, [name]: value });
         }
@@ -97,7 +95,6 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
         try {
             const formDataToSend = { ...formData };
             if (formDataToSend.imageList && formDataToSend.imageList.length === 0) {
@@ -126,6 +123,10 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
 
         try {
             await deleteMovie(getAccessTokenSilently, formData, user);
+            handleDeleteMovieUser(formData.id)
+            const newArrayMovies = await getAllMovies();
+            handleArrayMovies(newArrayMovies);
+
             setFormData({
                 id: '',
                 title: '',

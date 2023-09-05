@@ -4,9 +4,9 @@ import { URL_USER } from "../global/serverUrls";
 export const createUser = async (getToken: any, user: any) => {
     const token = await getToken();
     const userMail = user?.email;
-    console.log('entra en la creación de usuario')
     const formData = new FormData()
     formData.append('email', userMail);
+
     try {
         const response = await fetch(`${URL_USER}`,
             {

@@ -1,9 +1,7 @@
 import styled from 'styled-components';
 import { useAuth0 } from '@auth0/auth0-react'
-
 import breakpoints from '../../../global/deviceVariables';
 import { colors } from '../../../global/theme';
-
 import { CardMovie } from '../../../components/cardMovie/CardMovie';
 import { useContext, useState } from 'react';
 import { MoviesPublicContext } from '../../../context/moviesPublic.context';
@@ -18,7 +16,7 @@ type MovieProps = {
   genres: {
     name: string,
     id: string
-  }[],
+  },
   image: {
     public_id: string,
     secure_url: string
@@ -84,6 +82,9 @@ flex-direction: column;
   display: flex;
   justify-content: space-around;
   font-size: 1.5rem;
+
+  background: #ffffff;
+  opacity: 0.75;
   /* color: ${colors.secondary}; */
 
 }
@@ -92,11 +93,15 @@ flex-direction: column;
 }
 .active {
   font-weight: bold;
-  font-size:1.5rem;
+  font-size:1.4rem;
   color: ${colors.aux};
 }
 .inactive {
-  font-weight: normal;
+  font-weight: lighter;
+  font-style: italic;
+  font-size:1.2rem;
+  /* font-size: 1.2rem; */
+  color: ${colors.aux2}
 }
 
 @media (max-width: ${breakpoints.mobile}px) {

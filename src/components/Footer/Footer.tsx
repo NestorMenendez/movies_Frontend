@@ -1,23 +1,19 @@
 import styled from 'styled-components';
-
 import breakpoints from '../../global/deviceVariables';
 import { colors } from '../../global/theme';
 
+
 type Props = {}
+
 
 export const Footer = (props: Props) => {
 
-
-
   return (
-
     <FooterStyles>
       <div className='noOpa'>
         PRUEBA DE FOOTER
       </div>
-
     </FooterStyles>
-
   )
 }
 
@@ -45,7 +41,7 @@ opacity: 0.75;
 
 
 @media (min-width: ${breakpoints.mobile}px) and (max-width: ${breakpoints.tablet}px) {
-background-color: green;
+
 
 
 }

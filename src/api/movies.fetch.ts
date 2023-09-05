@@ -52,17 +52,13 @@ export const createMovie = async (getToken: any, data: any, user: any) => {
     const userMail = user?.email;
     const { title, score, genres, imageList } = data
     const image = imageList[0];
-    console.log(data)
-    console.log(title)
-    console.log(score)
-    console.log(image)
-    console.log(genres)
+
     const formData = new FormData()
     formData.append('title', title);
     formData.append('score', score);
     formData.append('genres', genres);
     formData.append('image', image);
-    console.log(formData)
+
     try {
         const response = await fetch(`${URL_MOVIES}/${userMail}`,
             {
@@ -86,13 +82,12 @@ export const createMovie = async (getToken: any, data: any, user: any) => {
 export const updateMovie = async (getToken: any, data: any, user: any) => {
     const token = await getToken();
     const { id, title, score, genres } = data
-    console.log(data)
+
     const formData = new FormData()
     formData.append('title', title);
     formData.append('score', score);
     formData.append('genres', genres);
 
-    console.log(formData)
     try {
         const response = await fetch(`${URL_MOVIES}/${id}`,
             {

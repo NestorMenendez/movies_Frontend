@@ -10,7 +10,6 @@ import { MoviesUserContext } from '../../context/moviesUser.context';
 import { MoviesPublicContext } from '../../context/moviesPublic.context';
 
 
-
 interface AddMovieProps {
     isOpen: boolean;
     handleCloseModal: () => void;
@@ -21,6 +20,7 @@ interface MovieData {
     score: number;
     imageList: FileList | null;
 }
+
 
 export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModal }) => {
 
@@ -35,8 +35,6 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
     const { genresAll } = useContext(GenresContext);
     const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext);
     const { arrayMovies, handleArrayMovies } = useContext(MoviesPublicContext);
-    console.log(genresAll)
-    // const { arrayMovies, handleArrayMovies, arrayMoviesCount, handleArrayMoviesCount } = useContext(MoviesPublicContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -47,15 +45,13 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
             const selectedOptions = Array.from((e.target as HTMLSelectElement).selectedOptions);
             const selectedGenreIds = selectedOptions.map(option => option.value);
             setFormData({ ...formData, genres: selectedGenreIds });
-            console.log(selectedGenreIds)
         } else {
             setFormData({ ...formData, [name]: value });
         }
-    }; //seguramente sea mas facil traer el count y sumarle uno al valor previo... y así que se relance el use 
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData)
         try {
 
             const newMovie = await createMovie(getAccessTokenSilently, formData, user);
@@ -69,7 +65,6 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
                 score: 0,
                 imageList: null,
             });
-            // handleArrayMovies((prevArrayMovies) => [...prevArrayMovies, formData])
             handleCloseModal();
         } catch (error) {
             console.error(error);

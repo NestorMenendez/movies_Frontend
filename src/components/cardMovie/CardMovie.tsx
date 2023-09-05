@@ -3,6 +3,7 @@ import breakpoints from '../../global/deviceVariables';
 import { colors } from '../../global/theme';
 import { useAuth0 } from '@auth0/auth0-react';
 
+
 type Props = {
     id: string,
     title: string,

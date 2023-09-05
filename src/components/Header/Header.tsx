@@ -10,33 +10,38 @@ import { getAllMoviesByUser } from '../../api/movies.fetch'
 import { MoviesUserContext } from '../../context/moviesUser.context'
 import { createUser, verifyUser } from '../../api/user.fetch'
 
+
 type MovieProps = {
   id: string,
   title: string,
   score: number,
-  genres: { name: string }[],
+  genres: {
+    name: string,
+    id: string
+  }[],
   image: {
     public_id: string,
     secure_url: string
   }
 }
 
-export const Header = () => {
 
+export const Header = () => {
   //
   const { isAuthenticated, loginWithPopup, logout, isLoading, user, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
+
+  const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext)
   //ModalAddMovie
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
-  //
-  const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext)
-  //
+
+
   useEffect(() => {
     if (isAuthenticated) {
       async function getAllMoviesUserLauncher() {
 
         if (user?.email) {
-          console.log(user?.email)
+
           const verifyUserInDB = await verifyUser(getAccessTokenSilently, user);
           if (verifyUserInDB?.email == 'notFound') {
             await createUser(getAccessTokenSilently, user);
@@ -50,7 +55,8 @@ export const Header = () => {
       getAllMoviesUserLauncher();
     }
   }, [isAuthenticated]);
-  //
+
+
   const handleLogin = async () => {
     try {
       await loginWithPopup();
@@ -67,13 +73,10 @@ export const Header = () => {
   }
 
   return (
-
     <HeaderStyles>
-
       <div className='noOpa'>
         your MOVIES dir
       </div>
-
       <div>
         {isAuthenticated &&
           <button onClick={handleOpenModal}>ADD MOVIE</button>}
@@ -85,9 +88,7 @@ export const Header = () => {
       {isModalAddOpen &&
         <ModalAddMovie isOpen={isModalAddOpen} handleCloseModal={handleCloseModal} ></ModalAddMovie>
       }
-
     </HeaderStyles>
-
   )
 }
 

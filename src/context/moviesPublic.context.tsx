@@ -25,7 +25,6 @@ export const MoviesPublicProvider: FC<Props> = ({ children }) => {
     const [arrayMovies, setArrayMovies] = useState<MovieProps[]>([]);
     const [arrayMoviesCount, setArrayMoviesCount] = useState(0);
     console.log(arrayMovies)
-    console.log(arrayMoviesCount)
     useEffect(() => {
         async function getAllMoviesLauncher() {
             const arrayMovies = await getAllMovies();
@@ -35,7 +34,6 @@ export const MoviesPublicProvider: FC<Props> = ({ children }) => {
                 setArrayMoviesCount(arrayMovies.length);
                 setArrayMovies(arrayMovies);
             }
-
         }
         getAllMoviesLauncher();
     }, [arrayMoviesCount])
@@ -49,7 +47,6 @@ export const MoviesPublicProvider: FC<Props> = ({ children }) => {
             setArrayMovies(newArrayMovies);
         }
     }
-
 
     return (
         <>
