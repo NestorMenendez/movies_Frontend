@@ -6,7 +6,9 @@ import { colors } from '../../global/theme'
 import { createMovie } from '../../api/movies.fetch';
 import { useContext, useState } from 'react';
 import { GenresContext } from '../../context/genres.context';
+import { MoviesUserContext } from '../../context/moviesUser.context';
 import { MoviesPublicContext } from '../../context/moviesPublic.context';
+
 
 
 interface AddMovieProps {
@@ -31,6 +33,9 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
 
     const { user, getAccessTokenSilently } = useAuth0();
     const { genresAll } = useContext(GenresContext);
+    const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext);
+    const { arrayMovies, handleArrayMovies } = useContext(MoviesPublicContext);
+    console.log(genresAll)
     // const { arrayMovies, handleArrayMovies, arrayMoviesCount, handleArrayMoviesCount } = useContext(MoviesPublicContext);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -52,7 +57,12 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
         e.preventDefault();
         console.log(formData)
         try {
-            await createMovie(getAccessTokenSilently, formData, user);
+
+            const newMovie = await createMovie(getAccessTokenSilently, formData, user);
+            const updatedArrayMoviesUser = [...arrayMoviesUser, newMovie]
+            handleArrayMoviesUser(updatedArrayMoviesUser)
+            handleArrayMovies(updatedArrayMoviesUser)
+
             setFormData({
                 title: '',
                 genres: [],
@@ -87,7 +97,8 @@ export const ModalAddMovie: React.FC<AddMovieProps> = ({ isOpen, handleCloseModa
                         </label>
                         <label>
                             Genre:
-                            <select multiple name="genres" onChange={handleChange}>
+                            <select name="genres" onChange={handleChange} required>
+                                <option value="">Select genre</option>
                                 {genresAll.map((genre) => (
                                     <option key={genre.id} value={genre.id}>
                                         {genre.name}

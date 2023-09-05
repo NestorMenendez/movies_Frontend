@@ -39,7 +39,6 @@ export const getAllMoviesByUser = async (getToken: any, user: any) => {
             }
         });
         const movies = await response.json();
-        console.log(movies)
         return movies;
     }
     catch {

@@ -6,6 +6,8 @@ import { colors } from '../../global/theme'
 import { deleteMovie, updateMovie } from '../../api/movies.fetch';
 import { useContext, useEffect, useState } from 'react';
 import { GenresContext } from '../../context/genres.context';
+import { MoviesUserContext } from '../../context/moviesUser.context';
+import { MoviesPublicContext } from '../../context/moviesPublic.context';
 
 
 interface EditMovieProps {
@@ -36,6 +38,9 @@ type MovieProps = {
 
 export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseModal, selectedMovie }) => {
 
+    const { arrayMoviesUser, handleArrayMoviesUser } = useContext(MoviesUserContext);
+    const { arrayMovies, handleArrayMovies } = useContext(MoviesPublicContext);
+
     const [formData, setFormData] = useState<MovieData>({
         id: '',
         title: '',
@@ -43,15 +48,14 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
         score: 0,
         imageList: null,
     });
-
+    console.log(selectedMovie)
     useEffect(() => {
         if (selectedMovie) {
-            const genresArray = selectedMovie.genres.name.split(',').map((genre) => genre.trim());
-            const firstGenre = genresArray.length > 0 ? [genresArray[0]] : []; //TOFIX??
+            const firstGenre = selectedMovie.genres.id;
             setFormData({
                 id: selectedMovie.id,
                 title: selectedMovie.title,
-                genres: firstGenre,
+                genres: [firstGenre],
                 score: selectedMovie.score,
                 imageList: null, // Puedes ajustarlo según tu lógica
             });
@@ -100,7 +104,11 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
                 formDataToSend.imageList = null;
             }
             formDataToSend.id = id;
-            await updateMovie(getAccessTokenSilently, formDataToSend, user);
+            const updatedMovie = await updateMovie(getAccessTokenSilently, formDataToSend, user);
+            const updatedArrayMovies = [...arrayMovies, updatedMovie];
+            handleArrayMoviesUser(updatedArrayMovies);
+            handleArrayMovies(updatedArrayMovies);
+
             setFormData({
                 id: '',
                 title: '',
@@ -154,7 +162,7 @@ export const ModalEditMovie: React.FC<EditMovieProps> = ({ isOpen, handleCloseMo
                             </label>
                             <label>
                                 Genre:
-                                <select multiple name="genres" onChange={handleChange}>
+                                <select name="genres" onChange={handleChange} required>
                                     {genresAll.map((genre) => (
                                         <option key={genre.id} value={genre.id}>
                                             {genre.name}

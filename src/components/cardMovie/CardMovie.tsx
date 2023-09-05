@@ -35,7 +35,9 @@ export const CardMovie = (Props: Props) => {
 
         <CardMovieStyles isAuthenticated={isAuthenticated}>
             <section className='card-container' onClick={handleCardMovieClick}>
-                <img src={imageUrl}></img>
+                <div className='img-container'>
+                    <img src={imageUrl}></img>
+                </div>
                 <div className='card-container__body'>
                     <h5>{title}</h5>
                     <h6>{genresNames}</h6>
@@ -67,11 +69,17 @@ const CardMovieStyles = styled.div<CardMovieStylesProps>`
     }
 
 }
+.img-container {
+    padding-top: 0.5rem;
+    padding-left:0.5rem;
+    padding-right:0.5rem;
+    height: 25vh;
+}
 img {
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
 }
 ${({ isAuthenticated }) => isAuthenticated && `
     cursor: pointer;
@@ -81,12 +89,19 @@ ${({ isAuthenticated }) => isAuthenticated && `
 @media (max-width: ${breakpoints.mobile}px) {
     width: 45%;
 
+    .img-container {
+    height: 25vh;
+}
+
 }
 
 
 @media (min-width: ${breakpoints.mobile}px) and (max-width: ${breakpoints.tablet}px) {
     width: 22%;
 
+    .img-container {
+    height: 25vh;
+}
 
 }
 
@@ -94,6 +109,9 @@ ${({ isAuthenticated }) => isAuthenticated && `
 @media (min-width: ${breakpoints.tablet}px) {
     width: 18%;
 
+    .img-container {
+    height: 40vh;
+}
 
 }
 `;

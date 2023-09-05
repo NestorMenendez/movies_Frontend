@@ -18,7 +18,7 @@ type MovieProps = {
     }
 }
 
-export const MoviesPublicContext = createContext<{ arrayMovies: MovieProps[], handleArrayMovies: (newArrayMovies: MovieProps[]) => void, arrayMoviesCount: number, handleArrayMoviesCount: (newArrayMoviesCount: number) => void }>({ arrayMovies: [], handleArrayMovies: () => { }, arrayMoviesCount: 0, handleArrayMoviesCount: () => { } })
+export const MoviesPublicContext = createContext<{ arrayMovies: MovieProps[], handleArrayMovies: (newArrayMovies: MovieProps[]) => void, }>({ arrayMovies: [], handleArrayMovies: () => { } })
 
 export const MoviesPublicProvider: FC<Props> = ({ children }) => {
 
@@ -49,14 +49,11 @@ export const MoviesPublicProvider: FC<Props> = ({ children }) => {
             setArrayMovies(newArrayMovies);
         }
     }
-    const handleArrayMoviesCount = (newArrayMoviesCount: number) => {
-        setArrayMoviesCount(newArrayMoviesCount);
-    }
 
 
     return (
         <>
-            <MoviesPublicContext.Provider value={{ arrayMovies, handleArrayMovies, arrayMoviesCount, handleArrayMoviesCount }}>
+            <MoviesPublicContext.Provider value={{ arrayMovies, handleArrayMovies }}>
                 {children}
             </MoviesPublicContext.Provider>
         </>
